@@ -67,7 +67,7 @@ MATCH (destination:Person {id: row.dst})
 MERGE (source)-[:FOLLOWS {distance: toInteger(row.dist)}]->(destination);
 
 LOAD CSV WITH HEADERS
-FROM 'https://raw.githubusercontent.com/yoshaexe/NoSQL/main/lab3/messages-relationships.csv' AS row
+FROM 'https://raw.githubusercontent.com/yoshaexe/study/main/noSQL/lab3/messages-relationships.csv' AS row
 MATCH (source:Person {id: row.src})
 MATCH (destination:Message {id: row.dst})
 MERGE (source)-[:FOLLOWS {distance: toInteger(row.dist)}]->(destination);
