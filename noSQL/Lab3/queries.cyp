@@ -20,30 +20,26 @@ MATCH (n)
 DELETE n;
 
 // 1.3
-CALL gds.graph.project.cypher('graph', 'Place', 'EROAD', {relationshipProperties: 'distance'});
+CALL gds.graph.project(
+  'graph',
+  'Place',
+  {
+    EROAD: {
+      properties: 'distance',
+      orientation: 'UNDIRECTED'
+    }
+  }
+)
 
 MATCH (n:Place {id: 'London'})
-CALL gds.allShortestPaths.delta.stream('graph', {
-  sourceNode:                 n,
-  delta:                      1.0,
-  relationshipWeightProperty: 'distance'
+CALL gds.alpha.spanningTree.minimum.write('graph', {
+  startNodeId: id(n),
+  relationshipWeightProperty: 'distance',
+  writeProperty: 'MINST',
+  weightWriteProperty: 'writeCost'
 })
-YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path
-  WHERE NOT sourceNode = targetNode
-RETURN
-  index,
-  gds.util.asNode(sourceNode).id AS sourceId,
-  gds.util.asNode(targetNode).id AS targetId,
-  totalCost,
-  [nodeId IN nodeIds | gds.util.asNode(nodeId).id] AS nodeIds,
-  costs
-  ORDER BY totalCost;
-
-MATCH (n:Place {id: 'London'})
-CALL gds.spanningTree.minimum('Place', 'EROAD', 'distance', id(n),
-{write: true, writeProperty: 'MINST'})
-YIELD loadMillis, computeMillis, writeMillis, effectiveNodeCount
-RETURN loadMillis, computeMillis, writeMillis, effectiveNodeCount
+YIELD preProcessingMillis, computeMillis, writeMillis, effectiveNodeCount
+RETURN preProcessingMillis, computeMillis, writeMillis, effectiveNodeCount;
 
 // 2.1
 LOAD CSV WITH HEADERS
