@@ -1,0 +1,39 @@
+src,dst,relationship,cost
+"Amsterdam","Utrecht","EROAD",46
+"Amsterdam","Den Haag","EROAD",59
+"Den Haag","Rotterdam","EROAD",26
+"Amsterdam","Immingham","EROAD",369
+"Immingham","Doncaster","EROAD",74
+"Doncaster","London","EROAD",277
+"Hoek van Holland","Den Haag","EROAD",27
+"Felixstowe","Hoek van Holland","EROAD",207
+"Ipswich","Felixstowe","EROAD",22
+"Colchester","Ipswich","EROAD",32
+"London","Colchester","EROAD",106
+"Gouda","Rotterdam","EROAD",25
+"Gouda","Utrecht","EROAD",35
+"Den Haag","Gouda","EROAD",32
+"Hoek van Holland","Rotterdam","EROAD",33
+"Hoek van Holland","Town1","EROAD",33
+"Hoek van Holland","Town2","EROAD",34
+"Hoek van Holland","Town3","EROAD",35
+"Hoek van Holland","Town4","EROAD",36
+"Hoek van Holland","Town5","EROAD",37
+"Hoek van Holland","Town6","EROAD",38
+"Hoek van Holland","Town7","EROAD",39
+"Hoek van Holland","Town8","EROAD",43
+"Hoek van Holland","Town9","EROAD",46
+"Hoek van Holland","Town10","EROAD",63
+"Hoek van Holland","Town11","EROAD",93
+"Amsterdam","Town9","EROAD",66
+"Amsterdam","Town1","EROAD",63
+"Amsterdam","Town2","EROAD",64
+"Amsterdam","Town3","EROAD",65
+"Amsterdam","Town4","EROAD",66
+"Amsterdam","Town5","EROAD",67
+"Amsterdam","Town6","EROAD",68
+"Amsterdam","Town7","EROAD",69
+"Amsterdam","Town8","EROAD",63
+"Amsterdam","Town9","EROAD",66
+"Amsterdam","Town10","EROAD",36
+"Amsterdam","Town11","EROAD",26
