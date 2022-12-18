@@ -20,8 +20,27 @@ MATCH (n)
 DELETE n;
 
 // 1.3
+CALL gds.graph.project.cypher('graph', 'Place', 'EROAD', {relationshipProperties: 'distance'});
+
 MATCH (n:Place {id: 'London'})
-CALL algo.spanningTree.minimum('Place', 'EROAD', 'distance', id(n),
+CALL gds.allShortestPaths.delta.stream('graph', {
+  sourceNode:                 n,
+  delta:                      1.0,
+  relationshipWeightProperty: 'distance'
+})
+YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path
+  WHERE NOT sourceNode = targetNode
+RETURN
+  index,
+  gds.util.asNode(sourceNode).id AS sourceId,
+  gds.util.asNode(targetNode).id AS targetId,
+  totalCost,
+  [nodeId IN nodeIds | gds.util.asNode(nodeId).id] AS nodeIds,
+  costs
+  ORDER BY totalCost;
+
+MATCH (n:Place {id: 'London'})
+CALL gds.spanningTree.minimum('Place', 'EROAD', 'distance', id(n),
 {write: true, writeProperty: 'MINST'})
 YIELD loadMillis, computeMillis, writeMillis, effectiveNodeCount
 RETURN loadMillis, computeMillis, writeMillis, effectiveNodeCount
