@@ -279,21 +279,26 @@ CREATE
     text: 'Integer sodales tempus augue quis rhoncus. Aenean feugiat dolor sapien.'
   });
 
+// reposted two popular posts
 MATCH (h1:Person {fio: 'Zhmishenko Valeriy Albertovich'})
 MATCH (p1:Post {id: 1})
 MATCH (p3:Post {id: 3})
 MATCH (p5:Post {id: 5})
 CREATE (h1)-[:CREATES]->(p1)
+CREATE (h1)-[:LIKES]->(p3)
+CREATE (h1)-[:LIKES]->(p5)
 CREATE (h1)-[:REPOST]->(p3)
 CREATE (h1)-[:REPOST]->(p5);
-
+// reposted two popular posts
 MATCH (h2:Person {fio: 'Ivanov Max Pavlovich'})
 MATCH (p2:Post {id: 2})
 MATCH (p3:Post {id: 3})
+MATCH (p4:Post {id: 4})
 MATCH (p5:Post {id: 5})
 CREATE (h2)-[:CREATES]->(p2)
 CREATE (h2)-[:REPOST]->(p3)
 CREATE (h2)-[:LIKES]->(p3)
+CREATE (h2)-[:LIKES]->(p4)
 CREATE (h2)-[:REPOST]->(p5);
 
 MATCH (h3:Person {fio: 'Vodyanskaya Maria Vasylievna'})
@@ -302,30 +307,37 @@ MATCH (p3:Post {id: 3})
 MATCH (p5:Post {id: 5})
 CREATE (h3)-[:CREATES]->(p3)
 CREATE (h3)-[:LIKES]->(p2)
+CREATE (h3)-[:LIKES]->(p5)
 CREATE (h3)-[:REPOST]->(p5);
 
-MATCH (h4:Person {fio: 'Vodyanskaya Maria Vasylievna'})
-MATCH (p1:Post {id: 2})
+MATCH (h4:Person {fio: 'Dripov Mark Yanovich'})
+MATCH (p2:Post {id: 2})
 MATCH (p4:Post {id: 4})
 MATCH (p5:Post {id: 5})
+MATCH (p7:Post {id: 7})
 CREATE (h4)-[:CREATES]->(p4)
 CREATE (h4)-[:LIKES]->(p2)
 CREATE (h4)-[:LIKES]->(p5)
+CREATE (h4)-[:LIKES]->(p7)
 CREATE (h4)-[:REPOST]->(p5)
 CREATE (h4)-[:REPOST]->(p2);
 
 MATCH (h5:Person {fio: 'Dripov Mark Yanovich'})
 MATCH (p2:Post {id: 2})
+MATCH (p3:Post {id: 3})
 MATCH (p5:Post {id: 5})
 CREATE (h5)-[:CREATES]->(p5)
 CREATE (h5)-[:LIKES]->(p2)
-CREATE (h5)-[:REPOST]->(p6);
+CREATE (h5)-[:LIKES]->(p3)
+CREATE (h5)-[:REPOST]->(p3);
 
 MATCH (h6:Person {fio: 'Badyanov Michael Semenovich'})
 MATCH (p2:Post {id: 2})
+MATCH (p5:Post {id: 5})
 MATCH (p6:Post {id: 6})
 CREATE (h6)-[:CREATES]->(p6)
 CREATE (h6)-[:LIKES]->(p2)
+CREATE (h6)-[:LIKES]->(p5)
 CREATE (h6)-[:REPOST]->(p2);
 
 MATCH (h7:Person {fio: 'Zhebk Diana Mamedovna'})
@@ -338,22 +350,31 @@ CREATE (h7)-[:REPOST]->(p5);
 MATCH (h8:Person {fio: 'Kumanov Zaur Farisovich'})
 MATCH (p6:Post {id: 6})
 MATCH (p8:Post {id: 8})
+MATCH (p11:Post {id: 11})
 CREATE (h8)-[:CREATES]->(p8)
+CREATE (h8)-[:LIKES]->(p11)
 CREATE (h8)-[:REPOST]->(p6);
 
 MATCH (h9:Person {fio: 'Babkina Elena Vladimirovna'})
+MATCH (p1:Post {id: 1})
+MATCH (p3:Post {id: 3})
 MATCH (p5:Post {id: 5})
 MATCH (p9:Post {id: 9})
 CREATE (h9)-[:CREATES]->(p9)
+CREATE (h9)-[:LIKES]->(p3)
 CREATE (h9)-[:LIKES]->(p5)
-CREATE (h9)-[:REPOST]->(p5);
+CREATE (h9)-[:REPOST]->(p1);
 
 MATCH (h10:Person {fio: 'Kokova Victotia Dmitrievna'})
+MATCH (p5:Post {id: 5})
+MATCH (p6:Post {id: 6})
 MATCH (p9:Post {id: 9})
 MATCH (p10:Post {id: 10})
 CREATE (h10)-[:CREATES]->(p10)
-CREATE (h10)-[:LIKES]->(p9);
-
+CREATE (h10)-[:LIKES]->(p5)
+CREATE (h10)-[:LIKES]->(p9)
+CREATE (h10)-[:REPOST]->(p6);
+// reposted two popular posts
 MATCH (h11:Person {fio: 'Nevazhno Svetlana Valerievna'})
 MATCH (p3:Post {id: 3})
 MATCH (p5:Post {id: 5})
@@ -364,45 +385,15 @@ CREATE (h11)-[:LIKES]->(p3)
 CREATE (h11)-[:REPOST]->(p5)
 CREATE (h11)-[:REPOST]->(p3);
 
-//MATCH (person:Person)-[:REPOST]->(post:Post)
-//WITH person, count(post) AS postsCount
-//WITH max(postsCount) AS max
-//MATCH (person:Person)-[:REPOST]->(post:Post)
-//WITH person, count(post) AS count, max
-//  WHERE count = max
-//WITH person
-//MATCH (person)-[:FRIENDS *2]->(n:Person)
-//  WHERE NOT (person)-[:FRIENDS]->(n) AND NOT (n) = (person)
-//MATCH (n)-[:CREATES]->(post:Post)
-//RETURN post.text
-//  ORDER BY size(post.text) DESC
-//  LIMIT 3;
-MATCH (person:Person)-[:REPOST]->(post:Post)
-WITH person, count(post) AS postsCount
-WITH max(postsCount) AS max
-MATCH (person:Person)-[:REPOST]->(post:Post)
-WITH person, count(post) AS count, max
-  WHERE count = max
-WITH person
-MATCH (person)-[:FRIENDS *2]->(n:Person)
-  WHERE NOT (person)-[:FRIENDS]->(n) AND NOT (n) = (person)
-MATCH (n)-[:CREATES]->(post:Post)
-RETURN post.text
-  ORDER BY size(post.text) DESC
-  LIMIT 3;
-
 // Вывести список людей, которые сделали репост всех двух самых популярных записей (по количеству лайков)
 
-MATCH (person:Person)-[:REPOST]->(post:Post)
-WITH person, count(post) AS postsCount
-WITH max(postsCount) AS max
-MATCH (person:Person)-[:REPOST]->(post:Post)
-WITH person, count(post) AS count, max
-  WHERE count = max
-WITH person
-MATCH (person)-[:FRIENDS *2]->(n:Person)
-  WHERE NOT (person)-[:FRIENDS]->(n) AND NOT (n) = (person)
-MATCH (n)-[:CREATES]->(post:Post)
-RETURN post.text
-  ORDER BY size(post.text) DESC
-  LIMIT 3;
+// right solution
+MATCH (post:Post)<-[L:LIKES]-(Person)
+WITH post, count(L) AS postLikes
+ORDER BY postLikes DESC
+LIMIT 2
+MATCH (person:Person)-[:REPOST]->(post)
+WITH DISTINCT person.fio AS Person, post.id as ID
+WITH Person, count(Person) as NUM
+WHERE NUM = 2
+RETURN Person;
