@@ -329,6 +329,7 @@ MATCH (p5:Post {id: 5})
 CREATE (h5)-[:CREATES]->(p5)
 CREATE (h5)-[:LIKES]->(p2)
 CREATE (h5)-[:LIKES]->(p3)
+CREATE (h5)-[:REPOST]->(p5)
 CREATE (h5)-[:REPOST]->(p3);
 
 MATCH (h6:Person {fio: 'Badyanov Michael Semenovich'})
