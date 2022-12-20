@@ -37,3 +37,4 @@ src,dst,relationship,cost
 "Amsterdam","Town9","EROAD",66
 "Amsterdam","Town10","EROAD",36
 "Amsterdam","Town11","EROAD",26
+"Amsterdam","London","EROAD",26

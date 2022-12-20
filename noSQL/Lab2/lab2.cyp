@@ -81,47 +81,59 @@ CREATE
   (maria)-[:FRIEND]->(zaur)
 
 // 1
+// Выдать упорядоченный список ФИО персон
 MATCH (p:Person)
 RETURN p.fio AS FIO
   ORDER BY p.fio;
 // 2
+// Выдать список ФИО мужчин с указанием возраста, упорядоченный по убыванию возраста
 MATCH (p:Person)
   WHERE p.gender = 'male'
 RETURN p.fio AS FIO, p.age AS AGE
   ORDER BY p.age DESC;
 // 3
+// Выдать упорядоченный список ФИО друзей персоны заданными ФИО
 MATCH (:Person {fio: 'Zhmishenko Valeriy Albertovich'})-[:FRIEND]->(n)
 RETURN n.fio AS FIO
   ORDER BY n.fio;
 // 4
+// Выдать упорядоченный список ФИО друзей друзей персоны заданными ФИО
 MATCH (p:Person {fio: 'Zhmishenko Valeriy Albertovich'})-[:FRIEND *2]->(n)
   WHERE NOT (p)-[:FRIEND]->(n) AND NOT (n) = (p)
 RETURN DISTINCT n.fio AS FIO
   ORDER BY n.fio;
 // 5
+// Выдать упорядоченный по алфавиту список ФИО персон, в котором для каждой персоны указано количество друзей
 MATCH (p:Person)-[:FRIEND]->(n)
 RETURN DISTINCT p.fio AS FIO, count(n) AS NUMBER_OF_FRIENDS
   ORDER BY p.fio;
 // 6
+// Выдать упорядоченный список групп социальной сети
 MATCH (p:Person)
 UNWIND p.groups AS group
 RETURN DISTINCT group AS GROUP
   ORDER BY group;
 // 7
+// Выдать упорядоченный список групп персоны с заданными ФИО
 MATCH (p:Person {fio: 'Zhmishenko Valeriy Albertovich'})
 UNWIND p.groups AS group
 RETURN DISTINCT group AS Group
   ORDER BY group;
 // 8
+// Выдать список групп социальной сети с указанием количества членов каждой группы,
+// упорядоченный по убыванию количества членов группы
 MATCH (p:Person)
 UNWIND p.groups AS group
 RETURN DISTINCT group AS Group, count(group) AS NUMBER_OF_MEMBERS
   ORDER BY NUMBER_OF_MEMBERS DESC;
 // 9
+// Выдать список ФИО персон, в котором для каждой персоны указано количество групп,
+// в которые она входит, упорядоченный по убыванию количества групп
 MATCH (p:Person)
 RETURN DISTINCT p.fio AS FIO, size(p.groups) AS NUMBER_OF_GROUPS
   ORDER BY NUMBER_OF_GROUPS DESC;
 // 10
+// Выдать общее количество групп, в которых состоят друзья друзей персоны с заданными ФИО
 MATCH (p:Person {fio: 'Nevazhno Svetlana Valerievna'})-[:FRIEND *2]->(n)
   WHERE NOT (p)-[:FRIEND]->(n) AND NOT (n) = (p)
 RETURN DISTINCT n.fio AS FIO, size(n.groups) AS NUMBER_OF_GROUPS
@@ -310,7 +322,7 @@ CREATE (h3)-[:LIKES]->(p2)
 CREATE (h3)-[:LIKES]->(p5)
 CREATE (h3)-[:REPOST]->(p5);
 
-MATCH (h4:Person {fio: 'Dripov Mark Yanovich'})
+MATCH (h4:Person {fio: 'Noname Miron Yanovich'})
 MATCH (p2:Post {id: 2})
 MATCH (p4:Post {id: 4})
 MATCH (p5:Post {id: 5})
@@ -321,7 +333,7 @@ CREATE (h4)-[:LIKES]->(p5)
 CREATE (h4)-[:LIKES]->(p7)
 CREATE (h4)-[:REPOST]->(p5)
 CREATE (h4)-[:REPOST]->(p2);
-
+// reposted two popular posts
 MATCH (h5:Person {fio: 'Dripov Mark Yanovich'})
 MATCH (p2:Post {id: 2})
 MATCH (p3:Post {id: 3})
@@ -394,7 +406,7 @@ WITH post, count(L) AS postLikes
 ORDER BY postLikes DESC
 LIMIT 2
 MATCH (person:Person)-[:REPOST]->(post)
-WITH DISTINCT person.fio AS Person, post.id as ID
-WITH Person, count(Person) as NUM
+WITH DISTINCT person.fio AS Person, post.id AS ID
+WITH Person, count(Person) AS NUM
 WHERE NUM = 2
 RETURN Person;

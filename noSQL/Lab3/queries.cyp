@@ -21,7 +21,7 @@ DELETE n;
 
 // 1.3
 CALL gds.graph.project(
-  'graph',
+  'graphPlaces',
   'Place',
   {
     EROAD: {
@@ -32,7 +32,7 @@ CALL gds.graph.project(
 )
 
 MATCH (n:Place {id: 'London'})
-CALL gds.alpha.spanningTree.minimum.write('graph', {
+CALL gds.alpha.spanningTree.minimum.write('graphPlaces', {
   startNodeId: id(n),
   relationshipWeightProperty: 'distance',
   writeProperty: 'MINST',
